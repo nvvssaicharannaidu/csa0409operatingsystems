@@ -3,6 +3,7 @@ A Multi-user, multitasking operating system such as Linux is suitable for this e
 Multiple users can access the system simultaneously from different terminals or network sessions.
 Multitasking allows several programs to run concurrently, enabling many students to execute their programs at the same time.
 Resource sharing is efficient because the CPU, memory, storage, and other system resources are managed and allocated among users and processes.
+CODE
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -37,6 +38,7 @@ Open "student.txt" using open() with O_CREAT and O_WRONLY
 Write "Rahul" into the file using write()
 Close the file using close()
 Stop
+CODE
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -81,6 +83,20 @@ Else
   Print "Parent Process Resumed"
 Stop
 and then prints Parent Process Resumed.
+CODE
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/wait.h>
+int main()
+{
+ if(fork()==0)
+execl("/bin/ls","ls",NULL);
+ else
+    {
+ wait(NULL);
+printf("Parent Resumed\n");
+    }
+}
 
 5. 
 functions used open(),close().
@@ -95,6 +111,18 @@ Allows users to create, delete, rename, and manage files easily.
 Start
 Open the file using open()
 Read the file contents using read()
+CODE 
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+int main()
+{
+ char b[50];
+int fd=open("student.txt",O_RDONLY);
+read(fd,b,50);
+printf("%s",b);
+close(fd);
+}
 Display the contents
 Close the file using close()
 Stop
