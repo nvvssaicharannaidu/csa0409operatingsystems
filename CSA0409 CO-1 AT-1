@@ -6,12 +6,9 @@ Resource sharing is efficient because the CPU, memory, storage, and other system
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
-
 int main() {
     pid_t pid;
-
     pid = fork();  
-
     if (pid < 0) {
         printf("Process creation failed\n");
     }
@@ -45,11 +42,11 @@ Stop
 #include <unistd.h>
 int main()
 {
-    int fd;
-    fd = open("student.txt", O_CREAT | O_WRONLY, 0644);
-    write(fd, "Rahul\n", 6);
-    close(fd);
-    return 0;
+ int fd;
+fd = open("student.txt", O_CREAT | O_WRONLY, 0644);
+write(fd, "Rahul\n", 6);
+close(fd);
+return 0;
 }
 output:
 
@@ -101,4 +98,4 @@ Read the file contents using read()
 Display the contents
 Close the file using close()
 Stop
-displays the contents on the screen, and closes the file using close()
+displays the contents on the screen, and closes the file using close().
