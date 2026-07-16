@@ -3,26 +3,22 @@ A Multi-user, multitasking operating system such as Linux is suitable for this e
 Multiple users can access the system simultaneously from different terminals or network sessions.
 Multitasking allows several programs to run concurrently, enabling many students to execute their programs at the same time.
 Resource sharing is efficient because the CPU, memory, storage, and other system resources are managed and allocated among users and processes.
-CODE
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-int main() {
-    pid_t pid;
-    pid = fork();  
-    if (pid < 0) {
-        printf("Process creation failed\n");
-    }
-    else if (pid == 0) {
-        printf("Child Process ID: %d\n", getpid());
-        printf("Parent Process ID from Child: %d\n", getppid());
-    }
-    else {
-        printf("Parent Process ID: %d\n", getpid());
-        printf("Child Process ID from Parent: %d\n", pid);
-    }
-    return 0;
-}
+fork()	Creates a new child process.
+getpid()	Returns the Process ID (PID) of the current process.
+getppid()	Returns the Parent Process ID (PPID) of the current process.
+printf()	Displays the Process IDs on the screen.
+Start
+Create a child process using fork()
+If (Child Process)
+Display "Child Process"
+Display Child Process ID using getpid()
+Display Parent Process ID using getppid()
+Else (Parent Process)
+Display "Parent Process"
+Display Parent Process ID using getpid()
+Display Child Process ID
+End If
+Stop
 output:
 Parent Process ID: 2345
 Child Process ID from Parent: 2346
