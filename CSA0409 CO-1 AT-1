@@ -3,23 +3,23 @@ A Multi-user, multitasking operating system such as Linux is suitable for this e
 Multiple users can access the system simultaneously from different terminals or network sessions.
 Multitasking allows several programs to run concurrently, enabling many students to execute their programs at the same time.
 Resource sharing is efficient because the CPU, memory, storage, and other system resources are managed and allocated among users and processes.
-fork()	Creates a new child process.
-getpid()	Returns the Process ID (PID) of the current process.
-getppid()	Returns the Parent Process ID (PPID) of the current process.
-printf()	Displays the Process IDs on the screen.
+fork() IT	Creates a new child process.
+getpid() ITO	Returns the Process ID (PID) of the current process
+getppid() IT	Returns the Parent Process ID (PPID) of the current process
+printf()	 IT Displays the Process IDs on the screenS
 Start
 Create a child process using fork()
 If (Child Process)
-Display "Child Process"
+Display Child Proces
 Display Child Process ID using getpid()
 Display Parent Process ID using getppid()
 Else (Parent Process)
-Display "Parent Process"
+Display Parent Process
 Display Parent Process ID using getpid()
 Display Child Process ID
 End If
 Stop
-output:
+AND The output:
 Parent Process ID: 2345
 Child Process ID from Parent: 2346
 Child Process ID: 2346
@@ -34,27 +34,13 @@ Open "student.txt" using open() with O_CREAT and O_WRONLY
 Write "Rahul" into the file using write()
 Close the file using close()
 Stop
-CODE
-#include <stdio.h>
-#include <fcntl.h>
-#include <unistd.h>
-int main()
-{
- int fd;
-fd = open("student.txt", O_CREAT | O_WRONLY, 0644);
-write(fd, "Rahul\n", 6);
-close(fd);
-return 0;
-}
-output:
 
 3.
 the functions we used are 
-open() – Open the source and destination files.
-read() – Read data from the source file.
-write() – Write data to the destination file.
-close() – Close both files after copying.
-
+open() –  ItOpen the source and destination files
+read() – It  Read data from the source file
+write() –  It Write data to the destination file
+close() –  It Close both files after copying
 Start
 Open source file in read mode
 Open destination file in write mode
@@ -63,7 +49,7 @@ Read data from source file
 Write data to destination file
 Close both files
 Stop
-The aim is to demonstrate the use of open(), read(), write(), and close() system calls to copy the contents of one file to another in a Linux operating system.
+ and The aim is to demonstrate the use of open(), read(), write(), and close() system calls to copy the contents of one file to another in a Linux operating system.
 
 4.
 the functions we used fork(),exec(),wait();
@@ -73,27 +59,13 @@ exec() Replaces the current process with a new program.
 Start
 Create child process using fork()
 If Child Process
-  Execute another program using exec()
+Execute another program using exec()
 Else
-  Wait for child process using wait()
-  Print "Parent Process Resumed"
+Wait for child process using wait()
+Print "Parent Process Resumed"
 Stop
 and then prints Parent Process Resumed.
-CODE
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/wait.h>
-int main()
-{
- if(fork()==0)
-execl("/bin/ls","ls",NULL);
- else
-    {
- wait(NULL);
-printf("Parent Resumed\n");
-    }
-}
-
+ 
 5. 
 functions used open(),close().
 *Closes the opened file.
@@ -104,9 +76,9 @@ Stores and retrieves data from secondary memory.
 Provides security and access control for files.
 Prevents data loss and ensures reliable storage.
 Allows users to create, delete, rename, and manage files easily.
-Start
-Open the file using open()
-Read the file contents using read()
+it Starts and then 
+Open the file using open(),
+Read the file contents using read(),
 CODE 
 #include <stdio.h>
 #include <fcntl.h>
@@ -122,4 +94,4 @@ close(fd);
 Display the contents
 Close the file using close()
 Stop
-displays the contents on the screen, and closes the file using close().
+ It displays the contents on the screen, and closes the file using close().
