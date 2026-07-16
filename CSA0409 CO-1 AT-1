@@ -7,7 +7,7 @@ fork() IT	Creates a new child process.
 getpid() ITO	Returns the Process ID (PID) of the current process
 getppid() IT	Returns the Parent Process ID (PPID) of the current process
 printf()	 IT Displays the Process IDs on the screenS
-Start
+Start the  program
 Create a child process using fork()
 If (Child Process)
 Display Child Proces
@@ -29,8 +29,8 @@ Parent Process ID from Child: 2345
 the functions we used is open(),write() ,read(),close()
 read() – Reads data from a file into memory.
 close() – Closes the file and releases the associated resources.
-Start
-Open "student.txt" using open() with O_CREAT and O_WRONLY
+Start the progsram
+Open student.txt using open() with CREAT and WRONLY
 Write "Rahul" into the file using write()
 Close the file using close()
 Stop
@@ -41,7 +41,7 @@ open() –  ItOpen the source and destination files
 read() – It  Read data from the source file
 write() –  It Write data to the destination file
 close() –  It Close both files after copying
-Start
+Start the program
 Open source file in read mode
 Open destination file in write mode
 While data is available
@@ -52,11 +52,11 @@ Stop
  and The aim is to demonstrate the use of open(), read(), write(), and close() system calls to copy the contents of one file to another in a Linux operating system.
 
 4.
-the functions we used fork(),exec(),wait();
+the functions we used fork(),exec(),wait()
 wait() causes the parent process to wait until the child process finishes execution.
 fork() Creates a new child process by duplicating the parent process.
 exec() Replaces the current process with a new program.
-Start
+Start the program
 Create child process using fork()
 If Child Process
 Execute another program using exec()
@@ -68,8 +68,8 @@ and then prints Parent Process Resumed.
  
 5. 
 functions used open(),close().
-*Closes the opened file.
-*Opens an existing file or creates a new file.
+Closes the opened file.
+Opens an existing file or creates a new file.
 
 Organizes files and directories efficiently.
 Stores and retrieves data from secondary memory.
