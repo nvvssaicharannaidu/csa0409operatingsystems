@@ -1,0 +1,100 @@
+Q1. Deadlock Debugging (Code Trace)
+ Problem Identification
+ Process P1 locks R1 first.
+ Process P2 locks R2 first.
+ Both processes wait for 100 ms before requesting the second resource.
+ P1 waits for R2, while P2 waits for R1.
+ Both processes keep waiting forever, causing a deadlock.
+ Root Cause
+ Circular wait occurs:
+ P1 → Holds R1 → Waits for R2
+ P2 → Holds R2 → Waits for R1
+ Mutual exclusion and hold-and-wait conditions are present.
+ Optimization
+ Acquire resources in the same order for both processes.
+Example: 
+
+ Lock R1 first.
+ Then lock R2.
+ This removes the circular wait condition.
+Result
+ Deadlock is eliminated.
+ Both processes execute safely.
+ System performance improves.
+Q2. CPU Utilization Problem
+ Problem Identification
+ CPU utilization is only 30%.
+ Processes repeatedly move between:
+ Ready → Waiting → Ready
+ Frequent waiting indicates excessive I/O operations.
+ Root Cause
+ CPU remains idle while processes wait for I/O.
+ Poor scheduling causes unnecessary waiting.
+ CPU is not efficiently utilized.
+ Optimization
+ Use asynchronous I/O to reduce waiting.
+ Increase multiprogramming so another process runs while one waits.
+ Improve CPU scheduling to keep the processor busy.
+ Result
+ CPU idle time decreases.
+ More processes execute simultaneously.
+ CPU utilization increases.
+Q3. Memory Bottleneck Debugging
+ Problem Identification
+ Heap memory = 150 MB.
+ Stack memory = 1 MB × 25 threads = 25 MB.
+ Frequent page faults reduce performance.
+ Memory accesses become slower.
+ Root Cause
+ Large memory usage increases page faults.
+ Threads compete for memory.
+ Poor memory locality causes frequent disk access.
+ Optimization 1
+ Reduce unnecessary memory allocation.
+ Reuse allocated memory whenever possible.
+ Optimization 2
+ Reduce thread stack size or limit the number of threads.
+ Improve memory locality to reduce page faults.
+ Result
+ Fewer page faults.
+ Faster execution.
+  Better memory performance.
+Q4. Starvation Debugging
+Problem Identification 
+ Process P5 is in Q3 (Batch Queue).
+Higher-priority queues (Q1 and Q2) continuously receive processes.
+ P5 never gets CPU time.
+ Root Cause
+ Strict priority scheduling.
+ Lower-priority processes are postponed indefinitely.
+ This leads to starvation.
+ Optimization
+ Apply Aging.
+ Gradually increase the priority of waiting processes.
+ Allocate CPU time fairly among all queues.
+ Result
+ Starvation is eliminated.
+ Every process eventually gets CPU time.
+ Fair scheduling is achieved.
+Q5. Context-Switch Overhead Debugging
+ Problem Identification
+ System performs 20,000 context switches per second.
+T ime quantum is only 1 ms.
+Threads have an average burst time of 2 ms.
+ Very frequent I/O requests increase switching.
+Root Cause
+ Small time quantum causes excessive preemption.
+ High I/O frequency forces frequent switching.
+C PU spends more time switching than executing.
+Optimization 1
+Increase the time quantum.
+Threads complete more work before switching.
+Optimization 2
+Reduce unnecessary context switches using better scheduling. 
+Batch I/O operations or use asynchronous I/O.
+Result
+Context-switch overhead decreases.
+CPU efficiency improves.
+Overall system performance increases.
+
+These answers directly address the five debugging and optimization tasks described in your assessment document.
