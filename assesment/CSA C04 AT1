@@ -1,0 +1,167 @@
+"""
+OS Lab - All 5 Questions in One File (compact version)
+1. File Allocation (Contiguous / Linked / Indexed)
+2. Free Space Bitmap
+3. FCFS / SSTF / SCAN disk scheduling
+4. C-SCAN / LOOK disk scheduling
+5. Integrated allocation + scheduling optimizer
+"""
+
+# ---------- Q1: File Allocation ----------
+def contiguous(disk, size):
+    n = len(disk)
+    for s in range(n - size + 1):
+        if all(disk[s:s+size][i] == 0 for i in range(size)):
+            for i in range(s, s+size): disk[i] = 1
+            return list(range(s, s+size))
+    return None
+
+def linked(disk, size):
+    free = [i for i, b in enumerate(disk) if b == 0]
+    if len(free) < size: return None
+    for i in free[:size]: disk[i] = 1
+    return free[:size]
+
+def indexed(disk, size):
+    free = [i for i, b in enumerate(disk) if b == 0]
+    if len(free) < size + 1: return None
+    idx, data = free[0], free[1:size+1]
+    for i in [idx] + data: disk[i] = 1
+    return idx, data
+
+def q1():
+    n = int(input("Disk size: "))
+    size = int(input("File size: "))
+    m = int(input("Method (1-Contiguous 2-Linked 3-Indexed): "))
+    disk = [0]*n
+    if m == 1: r = contiguous(disk, size); print("Allocated:", r or "Failed")
+    elif m == 2: r = linked(disk, size); print("Allocated:", r or "Failed")
+    elif m == 3:
+        r = indexed(disk, size)
+        print("Index block + Data blocks:", r if r else "Failed")
+    print("Bitmap:", "".join(map(str, disk)))
+
+
+# ---------- Q2: Bitmap Free Space Management ----------
+def q2():
+    n = int(input("Total blocks: "))
+    bmp = [0]*n
+    print("Bitmap:", "".join(map(str, bmp)))
+    req = int(input("Blocks to allocate: "))
+    free = [i for i, b in enumerate(bmp) if b == 0]
+    if len(free) < req:
+        print("Allocation failed")
+    else:
+        for i in free[:req]: bmp[i] = 1
+        print("Allocated:", free[:req])
+    print("Bitmap:", "".join(map(str, bmp)))
+    d = input("Blocks to deallocate (space separated, blank to skip): ")
+    if d.strip():
+        for i in map(int, d.split()): bmp[i] = 0
+        print("Bitmap:", "".join(map(str, bmp)))
+
+
+# ---------- Q3: FCFS / SSTF / SCAN ----------
+def fcfs(req, head, size):
+    seq = [head] + req
+    return seq, sum(abs(seq[i+1]-seq[i]) for i in range(len(seq)-1))
+
+def sstf(req, head, size):
+    req, seq, cur, total = req[:], [head], head, 0
+    while req:
+        c = min(req, key=lambda r: abs(r-cur))
+        total += abs(c-cur); cur = c; seq.append(c); req.remove(c)
+    return seq, total
+
+def scan(req, head, size, direction="right"):
+    left = sorted(r for r in req if r < head)
+    right = sorted(r for r in req if r >= head)
+    path = right+[size-1]+left[::-1] if direction == "right" else left[::-1]+[0]+right
+    seq, cur, total = [head], head, 0
+    for p in path:
+        total += abs(p-cur); cur = p; seq.append(p)
+    return seq, total
+
+def q3():
+    size = int(input("Disk size: "))
+    head = int(input("Head position: "))
+    req = list(map(int, input("Request queue: ").split()))
+    direction = input("SCAN direction (left/right): ").strip() or "right"
+    results = {"FCFS": fcfs(req, head, size), "SSTF": sstf(req, head, size),
+               "SCAN": scan(req, head, size, direction)}
+    for name, (seq, total) in results.items():
+        print(f"{name}: seq={seq} total={total}")
+    best = min(results, key=lambda k: results[k][1])
+    print("Best:", best)
+
+
+# ---------- Q4: C-SCAN / LOOK ----------
+def cscan(req, head, size, direction="right"):
+    left = sorted(r for r in req if r < head)
+    right = sorted(r for r in req if r >= head)
+    path = right+[size-1, 0]+left if direction == "right" else left[::-1]+[0, size-1]+right[::-1]
+    seq, cur, total = [head], head, 0
+    for p in path:
+        total += abs(p-cur); cur = p; seq.append(p)
+    return seq, total
+
+def look(req, head, size, direction="right"):
+    left = sorted(r for r in req if r < head)
+    right = sorted(r for r in req if r >= head)
+    path = right+left[::-1] if direction == "right" else left[::-1]+right
+    seq, cur, total = [head], head, 0
+    for p in path:
+        total += abs(p-cur); cur = p; seq.append(p)
+    return seq, total
+
+def q4():
+    size = int(input("Disk size: "))
+    head = int(input("Head position: "))
+    req = list(map(int, input("Request queue: ").split()))
+    direction = input("Direction (left/right): ").strip() or "right"
+    c_seq, c_total = cscan(req, head, size, direction)
+    l_seq, l_total = look(req, head, size, direction)
+    print(f"C-SCAN: seq={c_seq} total={c_total}")
+    print(f"LOOK:   seq={l_seq} total={l_total}")
+    print("Better:", "C-SCAN" if c_total < l_total else "LOOK" if l_total < c_total else "TIE")
+
+
+# ---------- Q5: Integrated Allocation + Scheduling ----------
+def q5():
+    n = int(input("Total blocks: "))
+    fsize = int(input("File size: "))
+    req = list(map(int, input("Existing request queue: ").split()))
+    head = int(input("Head position: "))
+
+    allocators = {"Contiguous": contiguous, "Indexed": lambda d, s: (indexed(d, s) or (None,))[-1] if indexed(d, s) else None}
+    schedulers = {"FCFS": fcfs, "SSTF": sstf}
+    best = None
+
+    for aname in ["Contiguous", "Indexed"]:
+        disk = [0]*n
+        if aname == "Contiguous":
+            alloc = contiguous(disk, fsize)
+        else:
+            res = indexed(disk, fsize)
+            alloc = res[1] if res else None
+        if not alloc:
+            print(f"{aname}: allocation failed"); continue
+        for sname, sfunc in schedulers.items():
+            combined = sorted(set(alloc) | set(req))
+            seq, total = sfunc(combined, head, n)
+            print(f"{aname}+{sname}: blocks={alloc} seq={seq} total={total}")
+            if best is None or total < best[0]:
+                best = (total, aname, sname)
+
+    if best:
+        print(f"Best combo: {best[1]} + {best[2]} (total seek={best[0]})")
+
+
+# ---------- Menu ----------
+def main():
+    print("1-File Allocation  2-Bitmap  3-FCFS/SSTF/SCAN  4-CSCAN/LOOK  5-Integrated")
+    choice = input("Choose question (1-5): ").strip()
+    {"1": q1, "2": q2, "3": q3, "4": q4, "5": q5}.get(choice, lambda: print("Invalid"))()
+
+if __name__ == "__main__":
+    main()
